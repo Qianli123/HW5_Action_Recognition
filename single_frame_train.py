@@ -115,7 +115,7 @@ def fc(x, c):
                             weight_decay=FC_WEIGHT_STDDEV)
     biases = _get_variable('biases',
                            shape=[num_units_out],
-                           initializer=tf.zeros_initializer)
+                           initializer=tf.zeros_initializer())
     x = tf.nn.xw_plus_b(x, weights, biases)
     return x
 
