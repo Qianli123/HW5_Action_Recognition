@@ -236,7 +236,7 @@ for i in range(len(test[0])):
         data[j,:,:,:] = frame
     h.close()
 
-    loop_i = list(range(0,nFrames,400))
+    loop_i = list(range(0,nFrames,200))
     loop_i.append(nFrames)
 
     for j in range(len(loop_i)-1):
@@ -280,7 +280,7 @@ sorted_results = results[indices]
 for i in range(NUM_CLASSES):
     print(sorted_list[i],sorted_results[i],number_of_examples[indices[i]])
 ```
-This loops through the dataset one video at a time saving the results. If the video is less than $400$ frames (limited by GPU memory), all of the frames are processed at once and stored in $prediction$. If it's more than $400$ frames, it loops through batches of $400$ until the entire video is processed. The rest of the code reports top-1, top-5, and top-10 accuracy as well as creates a confusion matrix. I won't go into detail here since I will ask you to do this later.
+This loops through the dataset one video at a time saving the results. If the video is less than $200$ frames (limited by GPU memory), all of the frames are processed at once and stored in $prediction$. If it's more than $200$ frames, it loops through batches of $200$ until the entire video is processed. The rest of the code reports top-1, top-5, and top-10 accuracy as well as creates a confusion matrix. I won't go into detail here since I will ask you to do this later.
 
 At this point, the model should be getting around $79\%$ to $81\%$ (full video prediction).
 
