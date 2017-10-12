@@ -246,7 +246,7 @@ for i in range(len(test[0])):
             feed_dict={X: data_batch, is_training:False, keep_prob:1.0})
         prediction[loop_i[j]:loop_i[j+1]] = curr_pred
 
-    filename = filename.replace(data_directory+'UCF-101-hd5/',prediction_directory)
+    filename = filename.replace(data_directory+'UCF-101-hdf5/',prediction_directory)
     if(not os.path.isfile(filename)):
         with h5py.File(filename,'w') as h:
             h.create_dataset('predictions',data=prediction)
