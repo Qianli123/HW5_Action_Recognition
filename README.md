@@ -342,27 +342,30 @@ The $BasicLSTMCell$ with $n$ number of features requires a $hidden\_state$ and $
 
 ```python
 probabilities = []
-loss = 0.0
-for i in range(sequence_length):
-    output, state = lstm(X_sequence[i,:,:], state)
-    output = tf.nn.dropout(output,keep_prob=keep_prob)
-    logits = tf.matmul(output, W_output) + B_output
-
-    probabilities.append(tf.nn.softmax(logits))
-
-    cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
-                    logits = logits, labels = y)
-    cross_entropy_mean = tf.reduce_mean(cross_entropy)
-
-    loss += cross_entropy_mean/float(sequence_length)
-
 probabilities_test = []
-for i in range(sequence_length_test):
-    output_test, state_test = lstm(X_sequence_test[i,:,:], state_test)
-    output_test = tf.nn.dropout(output_test,keep_prob=keep_prob)
-    logits_test = tf.matmul(output_test, W_output) + B_output
+loss = 0.0
+with tf.variable_scope('network'):
+    for i in range(sequence_length):
+        if(i>0):
+            tf.get_variable_scope().reuse_variables()
+        output, state = lstm(X_sequence[i,:,:], state)
+        output = tf.nn.dropout(output,keep_prob=keep_prob)
+        logits = tf.matmul(output, W_output) + B_output
 
-    probabilities_test.append(tf.nn.softmax(logits_test))
+        probabilities.append(tf.nn.softmax(logits))
+
+        cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
+                        logits = logits, labels = y)
+        cross_entropy_mean = tf.reduce_mean(cross_entropy)
+
+        loss += cross_entropy_mean/float(sequence_length)
+
+    for i in range(sequence_length_test):
+        output_test, state_test = lstm(X_sequence_test[i,:,:], state_test)
+        output_test = tf.nn.dropout(output_test,keep_prob=keep_prob)
+        logits_test = tf.matmul(output_test, W_output) + B_output
+
+        probabilities_test.append(tf.nn.softmax(logits_test))
 ```
 These loops are set up to process the full sequence. Notice the loss is continuously being added to. We are making a prediction after every frame and they all contribute to the total loss.
 
