@@ -361,6 +361,7 @@ with tf.variable_scope('network'):
         loss += cross_entropy_mean/float(sequence_length)
 
     for i in range(sequence_length_test):
+        tf.get_variable_scope().reuse_variables()
         output_test, state_test = lstm(X_sequence_test[i,:,:], state_test)
         output_test = tf.nn.dropout(output_test,keep_prob=keep_prob)
         logits_test = tf.matmul(output_test, W_output) + B_output
