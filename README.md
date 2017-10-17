@@ -511,21 +511,16 @@ Save the predictions from part 2 in another directory just like we did in part 1
 data_directory = ''
 class_list, train, test = getUCF101(base_directory = data_directory)
 
-###### some other code
-###### you have in between
+for i in range(len(test[0])):
+    filenames = test[0][i]
 
-filenames = test[0][random_indices[i:(batch_size+i)]]
-log_prob_single = np.zeros((batch_size,num_classes),np.float32)
-
-for j in range(len(filenames)):
-    filename = filenames[j]
     filename = filename.replace('.avi','.hdf5')
     filename = filename.replace('UCF-101','UCF-101-predictions')
     with h5py.File(filename,'r') as h:
-        pred_new = h['predictions'][:]
-    log_prob_single[j,:] = np.mean(np.log(pred_new),axis=0)
+        pred = h['predictions'][:]
+    pred = np.mean(np.log(pred),axis=0)
 ```
-This is an example for reading a random batch of predictions from part 1. The variable $log\_prob\_single$ is size $bs\times 101$ containing the log likelihood for each class averaged over the entire video. Combine this with the prediction from part 2 to see the test accuracy when using the output from both models.
+This is an example for reading the predictions for part 1. The variable $pred$ is size $101$ containing the log likelihood for each class averaged over the entire video. Combine this with the prediction from part 2 to see the test accuracy when using the output from both models.
 
 What to Turn In
 -------------
